@@ -1,42 +1,33 @@
-# 🛵 Phụ Tùng & Xe Máy Mai Sang
+# 🏍️ Phụ Tùng & Xe Máy Mai Sang
 
-Website giới thiệu, mua bán xe máy và cung cấp phụ tùng được thiết kế tối ưu cho các thiết bị di động. Dự án được xây dựng phục vụ trực tiếp cho quá trình lập trình và quản lý trên điện thoại thông minh thông qua các ứng dụng như **Acode** hoặc **Trebedit**.
+Chào mừng bạn đến với mã nguồn chính thức của website **Phụ Tùng & Xe Máy Mai Sang**. Trái tim của cửa hàng chuyên cung cấp, mua bán xe máy và phụ tùng uy tín.
 
----
-
-## 🌟 Tính Năng Nổi Bật
-
-* **Trang chủ giới thiệu:** Hiển thị thông tin cửa hàng, thương hiệu uy tín và thông tin liên hệ nhanh.
-* **Danh mục Mua Bán Xe:** Hiển thị danh sách xe máy đang kinh doanh kèm hình ảnh, giá bán và mô tả chi tiết.
-* **Đăng Bài & Upload Ảnh Trực Tiếp:** Tích hợp tính năng đăng tin bán xe ngay trên giao diện web (hình ảnh được chuyển đổi và lưu trữ trực tiếp trên bộ nhớ trình duyệt qua `localStorage`).
-* **Hỗ trợ Di động (Mobile-First):** Giao diện Responsive hoàn hảo, nút gọi điện nhanh (`Hotline: 0835397971`) được gắn nổi giúp khách hàng liên hệ tức thì.
+🌐 **Trang web chính thức (Live Demo):** [https://maisang71.github.io/Ph-t-ngxem-y-/](https://maisang71.github.io/Ph-t-ngxem-y-/)
 
 ---
 
-## 🛠️ Công Nghệ Sử Dụng
+## 📌 Tính Năng Nổi Bật
 
-* **HTML5 / CSS3**
-* **Tailwind CSS** (th thông qua CDN để style nhanh chóng và hiện đại)
-* **JavaScript (ES6+)** (Xử lý logic tương tác, DOM, và lưu trữ dữ liệu `localStorage`)
-* **FontAwesome** (Biểu tượng icon)
-
----
-
-## 📱 Hướng Dẫn Chạy trên Điện Thoại (Acode / Trebedit)
-
-Bạn có thể chỉnh sửa và chạy trực tiếp dự án này trên điện thoại Android bằng cách:
-
-1. Tải ứng dụng soạn thảo code **Acode** hoặc **Trebedit** trên Google Play Store.
-2. Tạo một file mới và đặt tên là `index.html`.
-3. Sao chép toàn bộ mã nguồn của trang web dán vào file `index.html`.
-4. Mở tính năng xem trước (**Preview**) trong ứng dụng để trải nghiệm trang web ngay lập tức.
+* **Mua Bán Xe Máy:** Hiển thị chi tiết hình ảnh, giá cả và mô tả tình trạng các dòng xe đang bán.
+* **Đăng Bài & Upload Ảnh Trực Tiếp:** Tích hợp tính năng đăng bài bán xe ngay trên giao diện di động hoặc máy tính.
+* **Đồng Bộ Dữ Liệu Đám Mây (Cloud Sync):** Sử dụng API lưu trữ trực tuyến giúp mọi bài đăng và hình ảnh được cập nhật tự động thời gian thực cho tất cả mọi người truy cập.
+* **Liên Hệ Nhanh:** Hỗ trợ nút gọi điện trực tiếp tới số Hotline cửa hàng.
 
 ---
 
 ## 📞 Thông Tin Liên Hệ
 
-* **Cửa hàng:** Phụ Tùng & Xe Máy Mai Sang
-* **Điện thoại / Zalo:** [0835397971](tel:0835397971)
+* **Chủ cửa hàng:** Mai Sang
+* **Số Điện Thoại / Zalo:** `0835397971`
+* **Địa chỉ:** Khu vực chuyên mua bán & phụ tùng xe máy uy tín.
 
 ---
-© 2026 - Phát triển cho Mai Sang.
+
+## 💻 Công Nghệ Sử Dụng
+
+* **Frontend:** HTML5, Tailwind CSS, JavaScript (Vanilla JS).
+* **Lưu trữ & Đồng bộ:** JSONBin API & GitHub Pages.
+* **Môi trường phát triển di động:** Acode / Trebedit (Android).
+
+---
+© 2026 - Phát triển cho Phụ Tùng Xe Máy Mai Sang.
