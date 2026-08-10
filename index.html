@@ -37,7 +37,7 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-bold border-l-4 border-red-600 pl-2">Danh Sách Xe Đang Bán</h3>
             <div class="flex items-center gap-2">
-                <span id="sync-status" class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Đang tải...</span>
+                <span id="sync-status" class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-semibold">Đang kết nối...</span>
                 <span id="total-posts" class="text-xs text-gray-500 bg-gray-200 px-2.5 py-1 rounded-full font-semibold">0 xe</span>
             </div>
         </div>
@@ -50,7 +50,7 @@
         <!-- Trạng thái tải -->
         <div id="loading-state" class="text-center py-12">
             <i class="fa-solid fa-spinner fa-spin text-3xl text-red-600 mb-2"></i>
-            <p class="text-gray-500 text-sm">Đang tải dữ liệu trực tuyến...</p>
+            <p class="text-gray-500 text-sm">Đang tải dữ liệu trực tuyến từ GitHub...</p>
         </div>
 
         <!-- Trạng thái trống -->
@@ -113,18 +113,27 @@
 
     <!-- JavaScript Xử lý GitHub API trực tiếp -->
     <script>
-        // === CẤU HÌNH THÔNG TIN GITHUB CỦA BẠN ===
+        // === HÃY THAY THÔNG TIN GITHUB CỦA BẠN VÀO ĐÂY ===
         const GITHUB_USER = "TEN_USER_GITHUB_CUA_BAN";
         const GITHUB_REPO = "TEN_REPOSITORY_CUA_BAN";
         const GITHUB_TOKEN = "github_pat_MÃ_TOKEN_CỦA_BẠN_Ở_ĐÂY"; 
-        // ==========================================
+        // ===============================================
 
         let bikes = [];
+
+        // Hàm mã hóa UTF-8 an toàn sang Base64 (Tránh lỗi tiếng Việt có dấu)
+        function utf8_to_b64(str) {
+            return window.btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+                function toSolidBytes(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+                }));
+        }
 
         // 1. Tải danh sách xe từ file data.json trên GitHub
         async function fetchBikes() {
             try {
                 const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data.json?t=${Date.now()}`);
+                if (!response.ok) throw new Error("Không tìm thấy file data.json");
                 const data = await response.json();
                 bikes = data.bikes || [];
                 renderBikes();
@@ -133,11 +142,13 @@
                 document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
             } catch (error) {
                 console.error("Lỗi tải data.json:", error);
-                document.getElementById('loading-state').innerHTML = '<p class="text-red-500 text-xs py-4">Không thể tải dữ liệu trực tuyến. Kiểm tra lại kết nối hoặc cấu hình GitHub.</p>';
+                document.getElementById('loading-state').innerHTML = '<p class="text-red-500 text-xs py-4 px-2">⚠️ Chưa tìm thấy file data.json trên kho GitHub hoặc cấu hình sai tên User/Repo. Hãy tạo file data.json chứa nội dung <code>{"bikes":[]}</code> trên nhánh main của GitHub.</p>';
+                document.getElementById('sync-status').innerText = "Lỗi kết nối";
+                document.getElementById('sync-status').className = "text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold";
             }
         }
 
-        // 2. Ghi đè cập nhật trực tiếp file data.json trên GitHub
+        // 2. Ghi đè cập nhật trực tiếp file data.json lên GitHub
         async function saveBikesToGitHub() {
             try {
                 document.getElementById('sync-status').innerText = "Đang lưu lên hệ thống...";
@@ -150,8 +161,9 @@
                 const fileData = await fileRes.json();
                 const fileSha = fileData.sha;
 
-                // Mã hóa dữ liệu sang Base64
-                const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify({ bikes: bikes }, null, 2))));
+                // Mã hóa dữ liệu chuẩn UTF-8 sang Base64
+                const jsonString = JSON.stringify({ bikes: bikes }, null, 2);
+                const contentEncoded = utf8_to_b64(jsonString);
 
                 // Gửi yêu cầu PUT cập nhật file
                 const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data.json`, {
@@ -161,7 +173,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: "Cập nhật danh sách xe mới qua web 2026",
+                        message: "Cập nhật danh sách xe mới qua web",
                         content: contentEncoded,
                         sha: fileSha
                     })
@@ -171,7 +183,7 @@
                     document.getElementById('sync-status').innerText = "Đã đồng bộ chung";
                     document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
                 } else {
-                    alert("Lỗi lưu file lên GitHub. Kiểm tra lại quyền Token!");
+                    alert("Lỗi lưu file lên GitHub. Kiểm tra lại quyền Token hoặc cấu hình!");
                 }
             } catch (error) {
                 console.error("Lỗi lưu GitHub:", error);
@@ -263,7 +275,7 @@
                     
                     submitBtn.innerText = "Đăng Lên Web";
                     submitBtn.disabled = false;
-                    alert('Đăng bài thành công! File data.json đã được cập nhật, mọi người truy cập vào web sẽ thấy ngay.');
+                    alert('Đăng bài thành công! Hệ thống đã cập nhật dữ liệu chung.');
                 }
                 reader.readAsDataURL(imageFile);
             }
