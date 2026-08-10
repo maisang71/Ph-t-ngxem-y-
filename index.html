@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mai Sang - Bán Xe Máy & Phụ Tùng Chính Hãng</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #2f3542;
+            --accent: #ffa502;
+            --light: #f1f2f6;
+            --dark: #222f3e;
+            --success: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f7f9fc;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--secondary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: background 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+            padding-left: 10px;
+            color: var(--secondary);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card Style */
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .card-body {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--secondary);
+        }
+
+        .card-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .btn-call {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Admin Management Section */
+        .admin-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .note-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Floating Hotlines */
+        .floating-contact {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .float-btn {
+            background: var(--success);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .float-btn.phone {
+            background: var(--primary);
+        }
+
+        .float-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        /* Responsive Mobile tweaks */
+        @media(max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo"><i class="fa-solid fa-motorcycle"></i> MAI SANG <span>XE MÁY</span></a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Trang Chủ</a></li>
+                <li><a href="#products">Xe Máy</a></li>
+                <li><a href="#parts">Phụ Tùng</a></li>
+                <li><a href="#admin">Đăng Bài</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Cửa Hàng Xe Máy & Phụ Tùng Mai Sang</h1>
+        <p>Chuyên mua bán xe máy chất lượng & phụ tùng chính hãng giá tốt nhất!</p>
+        <a href="tel:0835397971" class="btn-primary"><i class="fa-solid fa-phone"></i> Hotline: 0835.397.971</a>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Danh mục Xe Máy -->
+        <section id="products">
+            <div class="section-title">Danh Sách Xe Máy</div>
+            <div class="grid" id="motorcycle-grid">
+                <!-- Sản phẩm mẫu mặc định -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80" alt="Xe máy" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div class="card-body">
+                        <div>
+                            <div class="card-title">Honda Winner X Thể Thao</div>
+                            <div class="card-price">38.500.000 đ</div>
+                            <div class="card-desc">Xe đẹp như mới, máy móc êm ru, giấy tờ đầy đủ.</div>
+                        </div>
+                        <a href="tel:0835397971" class="btn-call"><i class="fa-solid fa-phone"></i> Gọi Mua Ngay</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Danh mục Phụ Tùng -->
+        <section id="parts" style="margin-top: 35px;">
+            <div class="section-title">Phụ Tùng Xe Máy</div>
+            <div class="grid" id="parts-grid">
+                <!-- Phụ tùng mẫu mặc định -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80" alt="Phụ tùng" onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'">
+                    <div class="card-body">
+                        <div>
+                            <div class="card-title">Nhớt Chính Hãng Motul 300V</div>
+                            <div class="card-price">380.000 đ</div>
+                            <div class="card-desc">Dầu nhớt tổng hợp cao cấp bảo vệ động cơ tối đa.</div>
+                        </div>
+                        <a href="tel:0835397971" class="btn-call"><i class="fa-solid fa-phone"></i> Gọi Đặt Mua</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Khu vực Quản trị: Đăng bài viết / Sản phẩm mới -->
+        <section id="admin" class="admin-section">
+            <div class="section-title" style="margin-bottom: 15px;">Đăng Bài & Sản Phẩm Mới</div>
+            <form id="postForm">
+                <div class="form-group">
+                    <label>Chọn danh mục:</label>
+                    <select id="category" required>
+                        <option value="motorcycle">Xe Máy</option>
+                        <option value="part">Phụ Tùng Xe Máy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tên sản phẩm / Tên xe:</label>
+                    <input type="text" id="title" placeholder="Ví dụ: Yamaha Exciter 155..." required>
+                </div>
+                <div class="form-group">
+                    <label>Giá bán:</label>
+                    <input type="text" id="price" placeholder="Ví dụ: 45.000.000 đ" required>
+                </div>
+                <div class="form-group">
+                    <label>Link Hình Ảnh (URL):</label>
+                    <input type="url" id="image" placeholder="Dán link ảnh trực tuyến (khuyên dùng ImgBB hoặc link ảnh công khai)" required>
+                    <span class="note-text">Mẹo: Nếu lấy ảnh từ Facebook, hãy nhấn giữ ảnh chọn "Sao chép địa chỉ hình ảnh" hoặc tải lên ImgBB.com để lấy link chuẩn nhất.</span>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả chi tiết:</label>
+                    <textarea id="description" rows="3" placeholder="Tình trạng, đời xe, thông số phụ tùng..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;"><i class="fa-solid fa-cloud-arrow-up"></i> Đăng Bài Lên Web</button>
+            </form>
+        </section>
+
+    </div>
+
+    <!-- Floating Hotlines -->
+    <div class="floating-contact">
+        <a href="tel:0835397971" class="float-btn phone" title="Gọi Ngay"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://zalo.me/0835397971" target="_blank" class="float-btn" title="Chat Zalo"><i class="fa-solid fa-comment-dots"></i></a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>CỬA HÀNG XE MÁY & PHỤ TÙNG MAI SANG</strong></p>
+        <p>Hotline / Zalo: 0835.397.971</p>
+        <p>&copy; 2026 - © Bản Quyền Thuộc Về Mai Sang </p>
+    </footer>
+
+    <!-- JavaScript xử lý dữ liệu và chống lỗi ảnh -->
+    <script>
+        document.addEventListener("DOMContentLoaded", loadProducts);
+
+        document.getElementById("postForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const category = document.getElementById("category").value;
+            const title = document.getElementById("title").value;
+            const price = document.getElementById("price").value;
+            const image = document.getElementById("image").value;
+            const description = document.getElementById("description").value;
+
+            const newProduct = { title, price, image, description };
+
+            // Lưu trữ vào LocalStorage của trình duyệt
+            let products = JSON.parse(localStorage.getItem(category)) || [];
+            products.unshift(newProduct); 
+            localStorage.setItem(category, JSON.stringify(products));
+
+            alert("Đăng bài viết/sản phẩm thành công!");
+            document.getElementById("postForm").reset();
+            loadProducts();
+        });
+
+        function loadProducts() {
+            // Load Xe Máy
+            let motorGrid = document.getElementById("motorcycle-grid");
+            let motors = JSON.parse(localStorage.getItem("motorcycle")) || [];
+            let motorHTML = "";
+            
+            motors.forEach(item => {
+                motorHTML += `
+                <div class="card">
+                    <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80';">
+                    <div class="card-body">
+                        <div>
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-price">${item.price}</div>
+                            <div class="card-desc">${item.description}</div>
+                        </div>
+                        <a href="tel:0835397971" class="btn-call"><i class="fa-solid fa-phone"></i> Gọi Mua Ngay</a>
+                    </div>
+                </div>`;
+            });
+            if(motors.length > 0) {
+                motorGrid.innerHTML = motorHTML + motorGrid.innerHTML;
+            }
+
+            // Load Phụ Tùng
+            let partsGrid = document.getElementById("parts-grid");
+            let parts = JSON.parse(localStorage.getItem("part")) || [];
+            let partsHTML = "";
+
+            parts.forEach(item => {
+                partsHTML += `
+                <div class="card">
+                    <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80';">
+                    <div class="card-body">
+                        <div>
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-price">${item.price}</div>
+                            <div class="card-desc">${item.description}</div>
+                        </div>
+                        <a href="tel:0835397971" class="btn-call"><i class="fa-solid fa-phone"></i> Gọi Đặt Mua</a>
+                    </div>
+                </div>`;
+            });
+            if(parts.length > 0) {
+                partsGrid.innerHTML = partsHTML + partsGrid.innerHTML;
+            }
+        }
+    </script>
+</body>
+</html>
