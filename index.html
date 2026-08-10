@@ -239,6 +239,12 @@
             outline: none;
         }
 
+        .form-group input[type="file"] {
+            padding: 8px;
+            background: #f9f9f9;
+            cursor: pointer;
+        }
+
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             border-color: var(--primary);
         }
@@ -372,7 +378,7 @@
 
         <!-- Khu vực Quản trị: Đăng bài viết / Sản phẩm mới -->
         <section id="admin" class="admin-section">
-            <div class="section-title" style="margin-bottom: 15px;">Đăng Bài & Sản Phẩm Mới</div>
+            <div class="section-title" style="margin-bottom: 15px;">Đăng Bài & Tải Lên Ảnh Mới</div>
             <form id="postForm">
                 <div class="form-group">
                     <label>Chọn danh mục:</label>
@@ -390,9 +396,9 @@
                     <input type="text" id="price" placeholder="Ví dụ: 45.000.000 đ" required>
                 </div>
                 <div class="form-group">
-                    <label>Link Hình Ảnh (URL):</label>
-                    <input type="url" id="image" placeholder="Dán link ảnh trực tuyến (khuyên dùng ImgBB hoặc link ảnh công khai)" required>
-                    <span class="note-text">Mẹo: Nếu lấy ảnh từ Facebook, hãy nhấn giữ ảnh chọn "Sao chép địa chỉ hình ảnh" hoặc tải lên ImgBB.com để lấy link chuẩn nhất.</span>
+                    <label>Chọn Ảnh Từ Thiết Bị (Upload):</label>
+                    <input type="file" id="imageFile" accept="image/*" required>
+                    <span class="note-text">Chọn trực tiếp ảnh chụp hoặc ảnh có sẵn trong thư viện điện thoại của bạn.</span>
                 </div>
                 <div class="form-group">
                     <label>Mô tả chi tiết:</label>
@@ -414,10 +420,10 @@
     <footer>
         <p><strong>CỬA HÀNG XE MÁY & PHỤ TÙNG MAI SANG</strong></p>
         <p>Hotline / Zalo: 0835.397.971</p>
-        <p>&copy; 2026 - © Bản Quyền Thuộc Về Mai Sang </p>
+        <p>&copy; 2026 - © Bản Quyền Thuộc Về Mai Sang</p>
     </footer>
 
-    <!-- JavaScript xử lý dữ liệu và chống lỗi ảnh -->
+    <!-- JavaScript xử lý Upload Ảnh và Lưu Trữ -->
     <script>
         document.addEventListener("DOMContentLoaded", loadProducts);
 
@@ -427,19 +433,27 @@
             const category = document.getElementById("category").value;
             const title = document.getElementById("title").value;
             const price = document.getElementById("price").value;
-            const image = document.getElementById("image").value;
             const description = document.getElementById("description").value;
+            const imageFile = document.getElementById("imageFile").files[0];
 
-            const newProduct = { title, price, image, description };
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result; // Chuyển đổi ảnh thành chuỗi mã hóa an toàn để lưu bộ nhớ
 
-            // Lưu trữ vào LocalStorage của trình duyệt
-            let products = JSON.parse(localStorage.getItem(category)) || [];
-            products.unshift(newProduct); 
-            localStorage.setItem(category, JSON.stringify(products));
+                    const newProduct = { title, price, image: base64Image, description };
 
-            alert("Đăng bài viết/sản phẩm thành công!");
-            document.getElementById("postForm").reset();
-            loadProducts();
+                    // Lưu trữ vào LocalStorage
+                    let products = JSON.parse(localStorage.getItem(category)) || [];
+                    products.unshift(newProduct); 
+                    localStorage.setItem(category, JSON.stringify(products));
+
+                    alert("Đăng bài viết và tải ảnh lên thành công!");
+                    document.getElementById("postForm").reset();
+                    loadProducts();
+                };
+                reader.readAsDataURL(imageFile);
+            }
         });
 
         function loadProducts() {
