@@ -1,20 +1,20 @@
 name: Deploy Website to GitHub Pages
 
 on:
-  # Tự động chạy khi bạn push code lên nhánh chính (main hoặc master)
+  # Tự động chạy khi bạn push code lên nhánh chính (main)
   push:
-    branches: [ "main" ] # Hoặc "master" tùy thuộc vào tên nhánh của bạn
+    branches: [ "main" ] # Hoặc "master" tùy thuộc vào nhánh của bạn
 
-  # Cho phép bạn chạy thủ công trực tiếp từ tab Actions trên GitHub
+  # Cho phép chạy thủ công trực tiếp từ tab Actions trên GitHub
   workflow_dispatch:
 
-# Quyền hạn cần thiết để GitHub Pages có thể đọc và ghi deploy
+# Quyền hạn cần thiết để GitHub Pages đọc và ghi deploy
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Chỉ cho phép một tiến trình deploy chạy đồng thời để tránh xung đột
+# Chỉ cho phép một tiến trình deploy chạy đồng thời tránh xung đột
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Thư mục chứa mã nguồn website (ở đây file index.html nằm ở thư mục gốc)
+          # Thư mục chứa mã nguồn website (file index.html nằm ở thư mục gốc)
           path: '.'
 
       - name: Deploy to GitHub Pages
