@@ -1,24 +1,38 @@
-# 🛵 Phụ Tùng & Xe Máy Mai Sang
+# Phụ Tùng & Xe Máy Mai Sang 🏍️
 
-Website chính thức chuyên mua bán xe máy và cung cấp phụ tùng uy tín, tích hợp tính năng đăng bài viết và hình ảnh trực tiếp, tự động đồng bộ hóa trên mọi thiết bị.
+> Website chuyên mua bán xe máy và cung cấp phụ tùng uy tín. Tích hợp hệ thống lưu trữ đám mây tự động, cho phép cập nhật bài viết và hình ảnh trực tiếp từ điện thoại (Acode / Trebedit) mà không cần cấu hình lại code phức tạp.
 
-🌐 **Trang web trực tuyến:** [https://maisang71.github.io/Ph-t-ngxem-y-/](https://maisang71.github.io/Ph-t-ngxem-y-/rai-sang)
+## 🚀 Tính Năng Nổi Bật
+
+- **Đồng Bộ Đám Mây Tự Động:** Sử dụng JSONBin.io để lưu trữ dữ liệu tập trung. Bất kỳ ai truy cập vào website từ mọi thiết bị đều thấy ngay các bài đăng mới nhất.
+- **Đăng Bài Trực Tiếp Từ Di Động:** Giao diện tối ưu hoàn hảo cho các trình soạn thảo code trên di động như **Acode** hoặc **Trebedit**.
+- **Quản Lý Linh Hoạt:** Cho phép thêm mới xe (tên, giá, hình ảnh, mô tả chi tiết) và xóa bài đăng trực tiếp ngay trên giao diện web.
+- **Giao Diện Hiện Đại:** Xây dựng bằng **Tailwind CSS** kết hợp **FontAwesome**, thân thiện với mọi kích thước màn hình từ điện thoại đến máy tính.
+- **Cơ Chế Dự Phòng (Fallback):** Tự động lưu trữ vào `LocalStorage` của trình duyệt nếu kết nối mạng gặp sự cố.
 
 ---
 
-## ✨ Tính Năng Nổi Bật
+## 🛠️ Công Nghệ Sử Dụng
 
-* **Trang chủ & Danh sách xe:** Hiển thị trực quan các dòng xe máy đang bán kèm hình ảnh, giá cả và mô tả chi tiết.
-* **Đăng tin trực tuyến (Upload):** Cho phép người dùng tải lên hình ảnh xe máy và thông tin bài viết trực tiếp từ điện thoại hoặc máy tính.
-* **Đồng bộ tự động qua GitHub API:** Mọi bài đăng mới hoặc thao tác xóa bài đều được lưu trực tiếp lên hệ thống GitHub, giúp tất cả khách hàng truy cập từ các thiết bị khác nhau đều thấy dữ liệu được cập nhật thời gian thực.
-* **Liên hệ nhanh:** Hỗ trợ nút gọi điện trực tiếp đến số điện thoại cửa hàng: **0835397971**.
+- **HTML5 / CSS3**
+- **Tailwind CSS** (via CDN)
+- **FontAwesome 6.4.0**
+- **JavaScript (ES6+ Async/Await)**
+- **JSONBin.io API** (Backend-as-a-Service lưu trữ dữ liệu JSON)
+
+---
+
+## 📱 Hướng Dẫn Sử Dụng & Triển Khai Trên Acode / Trebedit
+
+1. Mở ứng dụng **Acode** hoặc **Trebedit** trên điện thoại Android của bạn.
+2. Tạo một file mới hoặc thay thế nội dung vào file `index.html`.
+3. Dán toàn bộ mã nguồn của dự án vào.
+4. Chạy xem trước (Preview) trên trình duyệt hoặc đưa lên các nền tảng hosting miễn phí như **GitHub Pages** hoặc **Netlify** để chia sẻ cho mọi người cùng xem.
 
 ---
 
 ## 📞 Thông Tin Liên Hệ
-* **Chủ cửa hàng:** Mai Sang
-* **Hotline / Zalo:** 0835397971
-* **Nền tảng phát triển:** HTML5, Tailwind CSS, JavaScript (Tối ưu chỉnh sửa trên Acode & Trebedit cho Android).
 
----
-&copy; 2026 - Phụ Tùng & Xe Máy Mai Sang. All rights reserved.
+- **Chủ cửa hàng:** Mai Sang
+- **Hotline / Zalo:** [0835397971](tel:0835397971)
+- **Năm phát hành:** 2026
