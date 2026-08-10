@@ -26,7 +26,7 @@
     <!-- Hero Banner -->
     <section class="bg-gradient-to-r from-red-700 to-red-500 text-white py-8 px-4 text-center">
         <h2 class="text-2xl font-extrabold mb-2">Chuyên Mua Bán & Phụ Tùng Xe Máy</h2>
-        <p class="text-sm text-red-100 mb-4">Đồng bộ tự động - Xem được trên mọi thiết bị.</p>
+        <p class="text-sm text-red-100 mb-4">Hệ thống đồng bộ tự động - Ai mở lên cũng thấy dữ liệu mới.</p>
         <button onclick="openUploadModal()" class="bg-yellow-400 text-gray-900 font-bold px-5 py-2.5 rounded-lg shadow-lg text-sm flex items-center justify-center gap-2 mx-auto active:scale-95 transition">
             <i class="fa-solid fa-cloud-arrow-up"></i> Đăng Bài & Đăng Ảnh Xe Mới
         </button>
@@ -37,7 +37,7 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-bold border-l-4 border-red-600 pl-2">Danh Sách Xe Đang Bán</h3>
             <div class="flex items-center gap-2">
-                <span id="sync-status" class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Đã đồng bộ</span>
+                <span id="sync-status" class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Đang kết nối...</span>
                 <span id="total-posts" class="text-xs text-gray-500 bg-gray-200 px-2.5 py-1 rounded-full font-semibold">0 xe</span>
             </div>
         </div>
@@ -50,7 +50,7 @@
         <!-- Trạng thái khi đang tải -->
         <div id="loading-state" class="text-center py-12">
             <i class="fa-solid fa-spinner fa-spin text-3xl text-red-600 mb-2"></i>
-            <p class="text-gray-500 text-sm">Đang tải dữ liệu từ hệ thống chung...</p>
+            <p class="text-gray-500 text-sm">Đang tải dữ liệu trực tuyến...</p>
         </div>
 
         <!-- Trạng thái khi chưa có bài đăng -->
@@ -111,13 +111,15 @@
         <p class="text-gray-500">&copy; 2026 - Bản Quyền Của Mai Sang</p>
     </footer>
 
-    <!-- JavaScript Xử Lý Đồng Bộ -->
+    <!-- JavaScript Xử Lý Đồng Bộ Đám Mây -->
     <script>
+        // Cấu hình kết nối dữ liệu chung trực tuyến
         const BIN_ID = "66f2868facd3cb34a88bc3d6";
         const API_KEY = "$2a$10$33.pYTmOpFteGWGtX3raM.MMFcXeoqdoS0W7mGhrZr76ralAlyJ36";
         
         let bikes = [];
 
+        // 1. Tải dữ liệu tự động khi có người truy cập trang web
         async function fetchBikes() {
             try {
                 const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -127,17 +129,24 @@
                 bikes = data.record.bikes || [];
                 renderBikes();
                 document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('sync-status').innerText = "Đã đồng bộ";
+                document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
             } catch (error) {
-                console.error("Lỗi tải dữ liệu:", error);
+                console.error("Lỗi tải dữ liệu, chuyển sang bộ nhớ đệm:", error);
                 bikes = JSON.parse(localStorage.getItem('mai_sang_bikes_fallback')) || [];
                 renderBikes();
                 document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('sync-status').innerText = "Chế độ ngoại tuyến";
+                document.getElementById('sync-status').className = "text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-semibold";
             }
         }
 
+        // 2. Lưu trữ dữ liệu lên đám mây để mọi người cùng xem được
         async function saveBikesToCloud() {
             try {
-                document.getElementById('sync-status').innerText = "Đang đồng bộ...";
+                document.getElementById('sync-status').innerText = "Đang lưu lên hệ thống...";
+                document.getElementById('sync-status').className = "text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold";
+                
                 const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
                     headers: {
@@ -146,15 +155,20 @@
                     },
                     body: JSON.stringify({ bikes: bikes })
                 });
+                
                 if (response.ok) {
                     document.getElementById('sync-status').innerText = "Đã đồng bộ chung";
+                    document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
                 }
             } catch (error) {
                 console.error("Lỗi lưu cloud:", error);
                 localStorage.setItem('mai_sang_bikes_fallback', JSON.stringify(bikes));
+                document.getElementById('sync-status').innerText = "Lỗi lưu đám mây";
+                document.getElementById('sync-status').className = "text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold";
             }
         }
 
+        // 3. Hiển thị danh sách xe ra giao diện màn hình
         function renderBikes() {
             const listContainer = document.getElementById('bike-list');
             const emptyState = document.getElementById('empty-state');
@@ -207,6 +221,7 @@
             document.getElementById('upload-form').reset();
         }
 
+        // 4. Xử lý khi bấm nút đăng bài kèm hình ảnh từ điện thoại
         function handlePostSubmit(event) {
             event.preventDefault();
 
@@ -216,7 +231,7 @@
             const imageFile = document.getElementById('bike-image').files[0];
             const submitBtn = document.getElementById('submit-btn');
 
-            submitBtn.innerText = "Đang tải ảnh...";
+            submitBtn.innerText = "Đang xử lý ảnh...";
             submitBtn.disabled = true;
 
             if (imageFile) {
@@ -234,24 +249,28 @@
                     renderBikes();
                     closeUploadModal();
                     
+                    // Tự động đẩy lên server đám mây ngay lập tức
                     await saveBikesToCloud();
                     
                     submitBtn.innerText = "Đăng Lên Web";
                     submitBtn.disabled = false;
-                    alert('Đăng bài và đồng bộ thành công trên mọi thiết bị!');
+                    alert('Đăng bài thành công! Bất kỳ ai truy cập vào website đều sẽ nhìn thấy xe này.');
                 }
                 reader.readAsDataURL(imageFile);
             }
         }
 
+        // 5. Xóa bài đăng và tự động cập nhật lại cho toàn hệ thống
         async function deleteBike(id) {
             if (confirm('Bạn có chắc chắn muốn xóa bài đăng này trên hệ thống chung không?')) {
                 bikes = bikes.filter(bike => bike.id !== id);
+                renderBails = renderBikes();
                 renderBikes();
                 await saveBikesToCloud();
             }
         }
 
+        // Gọi hàm tải dữ liệu khi trang vừa mở
         fetchBikes();
     </script>
 </body>
