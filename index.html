@@ -26,7 +26,7 @@
     <!-- Hero Banner -->
     <section class="bg-gradient-to-r from-red-700 to-red-500 text-white py-8 px-4 text-center">
         <h2 class="text-2xl font-extrabold mb-2">Chuyên Mua Bán & Phụ Tùng Xe Máy</h2>
-        <p class="text-sm text-red-100 mb-4">Hệ thống đồng bộ tự động - Ai mở lên cũng thấy dữ liệu mới.</p>
+        <p class="text-sm text-red-100 mb-4">Hệ thống đồng bộ trực tiếp qua data.json - Mọi người đều thấy.</p>
         <button onclick="openUploadModal()" class="bg-yellow-400 text-gray-900 font-bold px-5 py-2.5 rounded-lg shadow-lg text-sm flex items-center justify-center gap-2 mx-auto active:scale-95 transition">
             <i class="fa-solid fa-cloud-arrow-up"></i> Đăng Bài & Đăng Ảnh Xe Mới
         </button>
@@ -37,23 +37,23 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-bold border-l-4 border-red-600 pl-2">Danh Sách Xe Đang Bán</h3>
             <div class="flex items-center gap-2">
-                <span id="sync-status" class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Đang kết nối...</span>
+                <span id="sync-status" class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold">Đang tải...</span>
                 <span id="total-posts" class="text-xs text-gray-500 bg-gray-200 px-2.5 py-1 rounded-full font-semibold">0 xe</span>
             </div>
         </div>
 
         <!-- Danh sách xe (Grid) -->
         <div id="bike-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Dữ liệu xe sẽ được render tự động ở đây -->
+            <!-- Dữ liệu render tự động -->
         </div>
 
-        <!-- Trạng thái khi đang tải -->
+        <!-- Trạng thái tải -->
         <div id="loading-state" class="text-center py-12">
             <i class="fa-solid fa-spinner fa-spin text-3xl text-red-600 mb-2"></i>
             <p class="text-gray-500 text-sm">Đang tải dữ liệu trực tuyến...</p>
         </div>
 
-        <!-- Trạng thái khi chưa có bài đăng -->
+        <!-- Trạng thái trống -->
         <div id="empty-state" class="text-center py-12 hidden">
             <i class="fa-solid fa-motorcycle text-4xl text-gray-300 mb-2"></i>
             <p class="text-gray-500 text-sm">Chưa có xe nào được đăng trên hệ thống.</p>
@@ -67,7 +67,7 @@
         </button>
     </div>
 
-    <!-- Modal Upload Bài Viết & Ảnh -->
+    <!-- Modal Upload -->
     <div id="upload-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
             <div class="bg-red-600 text-white px-4 py-3 flex justify-between items-center">
@@ -111,64 +111,76 @@
         <p class="text-gray-500">&copy; 2026 - Bản Quyền Của Mai Sang</p>
     </footer>
 
-    <!-- JavaScript Xử Lý Đồng Bộ Đám Mây -->
+    <!-- JavaScript Xử lý GitHub API trực tiếp -->
     <script>
-        // Cấu hình kết nối dữ liệu chung trực tuyến
-        const BIN_ID = "66f2868facd3cb34a88bc3d6";
-        const API_KEY = "$2a$10$33.pYTmOpFteGWGtX3raM.MMFcXeoqdoS0W7mGhrZr76ralAlyJ36";
-        
+        // === CẤU HÌNH THÔNG TIN GITHUB CỦA BẠN ===
+        const GITHUB_USER = "TEN_USER_GITHUB_CUA_BAN";
+        const GITHUB_REPO = "TEN_REPOSITORY_CUA_BAN";
+        const GITHUB_TOKEN = "github_pat_MÃ_TOKEN_CỦA_BẠN_Ở_ĐÂY"; 
+        // ==========================================
+
         let bikes = [];
 
-        // 1. Tải dữ liệu tự động khi có người truy cập trang web
+        // 1. Tải danh sách xe từ file data.json trên GitHub
         async function fetchBikes() {
             try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
+                const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data.json?t=${Date.now()}`);
                 const data = await response.json();
-                bikes = data.record.bikes || [];
+                bikes = data.bikes || [];
                 renderBikes();
                 document.getElementById('loading-state').classList.add('hidden');
                 document.getElementById('sync-status').innerText = "Đã đồng bộ";
                 document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
             } catch (error) {
-                console.error("Lỗi tải dữ liệu, chuyển sang bộ nhớ đệm:", error);
-                bikes = JSON.parse(localStorage.getItem('mai_sang_bikes_fallback')) || [];
-                renderBikes();
-                document.getElementById('loading-state').classList.add('hidden');
-                document.getElementById('sync-status').innerText = "Chế độ ngoại tuyến";
-                document.getElementById('sync-status').className = "text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-semibold";
+                console.error("Lỗi tải data.json:", error);
+                document.getElementById('loading-state').innerHTML = '<p class="text-red-500 text-xs py-4">Không thể tải dữ liệu trực tuyến. Kiểm tra lại kết nối hoặc cấu hình GitHub.</p>';
             }
         }
 
-        // 2. Lưu trữ dữ liệu lên đám mây để mọi người cùng xem được
-        async function saveBikesToCloud() {
+        // 2. Ghi đè cập nhật trực tiếp file data.json trên GitHub
+        async function saveBikesToGitHub() {
             try {
                 document.getElementById('sync-status').innerText = "Đang lưu lên hệ thống...";
                 document.getElementById('sync-status').className = "text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold";
-                
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+
+                // Lấy SHA hiện tại của file data.json
+                const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data.json`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                const fileData = await fileRes.json();
+                const fileSha = fileData.sha;
+
+                // Mã hóa dữ liệu sang Base64
+                const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify({ bikes: bikes }, null, 2))));
+
+                // Gửi yêu cầu PUT cập nhật file
+                const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data.json`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ bikes: bikes })
+                    body: JSON.stringify({
+                        message: "Cập nhật danh sách xe mới qua web 2026",
+                        content: contentEncoded,
+                        sha: fileSha
+                    })
                 });
-                
-                if (response.ok) {
+
+                if (updateRes.ok) {
                     document.getElementById('sync-status').innerText = "Đã đồng bộ chung";
                     document.getElementById('sync-status').className = "text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-semibold";
+                } else {
+                    alert("Lỗi lưu file lên GitHub. Kiểm tra lại quyền Token!");
                 }
             } catch (error) {
-                console.error("Lỗi lưu cloud:", error);
-                localStorage.setItem('mai_sang_bikes_fallback', JSON.stringify(bikes));
+                console.error("Lỗi lưu GitHub:", error);
                 document.getElementById('sync-status').innerText = "Lỗi lưu đám mây";
                 document.getElementById('sync-status').className = "text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-semibold";
             }
         }
 
-        // 3. Hiển thị danh sách xe ra giao diện màn hình
+        // 3. Hiển thị danh sách xe ra giao diện
         function renderBikes() {
             const listContainer = document.getElementById('bike-list');
             const emptyState = document.getElementById('empty-state');
@@ -212,16 +224,13 @@
             });
         }
 
-        function openUploadModal() {
-            document.getElementById('upload-modal').classList.remove('hidden');
-        }
-
-        function closeUploadModal() {
-            document.getElementById('upload-modal').classList.add('hidden');
+        function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); }
+        function closeUploadModal() { 
+            document.getElementById('upload-modal').classList.add('hidden'); 
             document.getElementById('upload-form').reset();
         }
 
-        // 4. Xử lý khi bấm nút đăng bài kèm hình ảnh từ điện thoại
+        // 4. Xử lý sự kiện đăng bài viết và hình ảnh mới
         function handlePostSubmit(event) {
             event.preventDefault();
 
@@ -249,28 +258,27 @@
                     renderBikes();
                     closeUploadModal();
                     
-                    // Tự động đẩy lên server đám mây ngay lập tức
-                    await saveBikesToCloud();
+                    // Tự động đẩy file data.json mới lên GitHub
+                    await saveBikesToGitHub();
                     
                     submitBtn.innerText = "Đăng Lên Web";
                     submitBtn.disabled = false;
-                    alert('Đăng bài thành công! Bất kỳ ai truy cập vào website đều sẽ nhìn thấy xe này.');
+                    alert('Đăng bài thành công! File data.json đã được cập nhật, mọi người truy cập vào web sẽ thấy ngay.');
                 }
                 reader.readAsDataURL(imageFile);
             }
         }
 
-        // 5. Xóa bài đăng và tự động cập nhật lại cho toàn hệ thống
+        // 5. Xóa bài viết và cập nhật lại hệ thống
         async function deleteBike(id) {
             if (confirm('Bạn có chắc chắn muốn xóa bài đăng này trên hệ thống chung không?')) {
                 bikes = bikes.filter(bike => bike.id !== id);
-                renderBails = renderBikes();
                 renderBikes();
-                await saveBikesToCloud();
+                await saveBikesToGitHub();
             }
         }
 
-        // Gọi hàm tải dữ liệu khi trang vừa mở
+        // Khởi chạy tải dữ liệu khi mở trang
         fetchBikes();
     </script>
 </body>
